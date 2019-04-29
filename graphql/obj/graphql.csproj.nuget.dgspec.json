@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj": {}
+  },
+  "projects": {
+    "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj",
+        "projectName": "graphql",
+        "projectPath": "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj",
+        "packagesPath": "/home/daniel/.nuget/packages/",
+        "outputPath": "/home/daniel/Documents/git-hub/csharp/graphql/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/home/daniel/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/home/daniel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
