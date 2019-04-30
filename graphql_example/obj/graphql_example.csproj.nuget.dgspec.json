@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj": {}
+    "/home/daniel/Documents/git-hub/csharp/graphql_example/graphql_example.csproj": {}
   },
   "projects": {
-    "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj": {
+    "/home/daniel/Documents/git-hub/csharp/graphql_example/graphql_example.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj",
-        "projectName": "graphql",
-        "projectPath": "/home/daniel/Documents/git-hub/csharp/graphql/graphql.csproj",
+        "projectUniqueName": "/home/daniel/Documents/git-hub/csharp/graphql_example/graphql_example.csproj",
+        "projectName": "graphql_example",
+        "projectPath": "/home/daniel/Documents/git-hub/csharp/graphql_example/graphql_example.csproj",
         "packagesPath": "/home/daniel/.nuget/packages/",
-        "outputPath": "/home/daniel/Documents/git-hub/csharp/graphql/obj/",
+        "outputPath": "/home/daniel/Documents/git-hub/csharp/graphql_example/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/home/daniel/dotnet/sdk/NuGetFallbackFolder"
@@ -39,6 +39,10 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "GraphQL": {
+              "target": "Package",
+              "version": "(, )"
+            },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
               "target": "Package",

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace graphql
+namespace graphql_example
 {
     class Program
     {
