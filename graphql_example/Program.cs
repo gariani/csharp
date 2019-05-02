@@ -1,4 +1,5 @@
 ﻿using System;
+using GraphQL;
 
 namespace graphql_example
 {
@@ -6,7 +7,7 @@ namespace graphql_example
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
