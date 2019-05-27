@@ -20,7 +20,6 @@ namespace myConsole
     private const string spAccessKeyID = "SAJRDO";
     private const string spHash = "SHA256withRSA";
     private const string typeEncode = "utf-8";
-    private string spDate;
 
     public string TypeEncode
     {

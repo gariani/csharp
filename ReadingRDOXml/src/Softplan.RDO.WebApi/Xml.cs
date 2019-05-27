@@ -5,12 +5,17 @@ using System.IO;
 using System.IO.Compression;
 using System.Xml;
 using System.Text;
+using System.ComponentModel;
 
 namespace Softplan.RDO.WebApi
 {
 
-  public class Xml
+  public class Xml: IDisposable
   {
+    private bool disposed = false;
+    private IntPtr handle;
+    private Component component = new Component();
+
     private Stream RemoveInvalidXmlChars(Stream xml)
     {
       StreamReader reader = new StreamReader(xml);
@@ -85,6 +90,38 @@ namespace Softplan.RDO.WebApi
       }
       return null;
     }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!disposed)
+      {
+        if (disposing)
+        {
+          component.Dispose();
+        }
+
+        CloseHandle(handle);
+        handle = IntPtr.Zero;
+
+        disposed = true;
+
+      }
+    }
+
+    [System.Runtime.InteropServices.DllImport("Kernel32")]
+    private extern static Boolean CloseHandle(IntPtr handle);
+
+    ~Xml()
+    {
+      Dispose(false);
+    }
+
 
   }
 

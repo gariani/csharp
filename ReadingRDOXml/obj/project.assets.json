@@ -3490,11 +3490,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Arquivos Integração\\Daniel\\Estudo\\C#\\ReadingRDOXml\\ReadingRDOXml.csproj",
+      "projectUniqueName": "d:\\Arquivos Integração\\Daniel\\Estudo\\C#\\csharp\\ReadingRDOXml\\ReadingRDOXml.csproj",
       "projectName": "ReadingRDOXml",
-      "projectPath": "D:\\Arquivos Integração\\Daniel\\Estudo\\C#\\ReadingRDOXml\\ReadingRDOXml.csproj",
+      "projectPath": "d:\\Arquivos Integração\\Daniel\\Estudo\\C#\\csharp\\ReadingRDOXml\\ReadingRDOXml.csproj",
       "packagesPath": "C:\\Users\\daniel.rafael\\.nuget\\packages\\",
-      "outputPath": "D:\\Arquivos Integração\\Daniel\\Estudo\\C#\\ReadingRDOXml\\obj\\",
+      "outputPath": "d:\\Arquivos Integração\\Daniel\\Estudo\\C#\\csharp\\ReadingRDOXml\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
