@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "ddc59e209464068e2cb40dd2e1618df0f2741a86"
+    "signature": "bec275320d6dfe40bf98af9650601678bcc436ad"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,6 +9,8 @@
       "ReadingRDOXml/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "2.2.4",
+          "Microsoft.EntityFrameworkCore.SqlServer": "2.2.4",
+          "Microsoft.SqlServer.SqlManagementObjects": "150.18118.0",
           "Newtonsoft.Json": "12.0.2",
           "SharpZipLib": "1.1.0",
           "System.Data.SqlClient": "4.6.1"
@@ -46,6 +48,29 @@
         }
       },
       "Microsoft.EntityFrameworkCore.Analyzers/2.2.4": {},
+      "Microsoft.EntityFrameworkCore.Relational/2.2.4": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "2.2.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.EntityFrameworkCore.Relational.dll": {
+            "assemblyVersion": "2.2.4.0",
+            "fileVersion": "2.2.4.19081"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.SqlServer/2.2.4": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "2.2.4",
+          "System.Data.SqlClient": "4.6.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.EntityFrameworkCore.SqlServer.dll": {
+            "assemblyVersion": "2.2.4.0",
+            "fileVersion": "2.2.4.19081"
+          }
+        }
+      },
       "Microsoft.Extensions.Caching.Abstractions/2.2.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "2.2.0"
@@ -166,6 +191,95 @@
           "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.0.18315"
+          }
+        }
+      },
+      "Microsoft.SqlServer.SqlManagementObjects/150.18118.0": {
+        "dependencies": {
+          "System.Data.SqlClient": "4.6.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Data.Tools.Sql.BatchParser.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.ConnectionInfo.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Dmf.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.Dmf.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.RegisteredServers.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.Sdk.Sfc.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.SmoMetadataProvider.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.SqlScriptPublishModel.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.XEvent.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.XEventDbScoped.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.XEventDbScopedEnum.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Management.XEventEnum.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.PolicyEnum.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.Smo.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.SmoExtended.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.SqlEnum.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          },
+          "lib/netstandard2.0/Microsoft.SqlServer.SqlParser.dll": {
+            "assemblyVersion": "15.2.0.0",
+            "fileVersion": "15.2.0.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/Microsoft.SqlServer.BatchParser.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "assemblyVersion": "15.100.0.0",
+            "fileVersion": "2018.150.1000.16"
+          },
+          "runtimes/win-x86/native/Microsoft.SqlServer.BatchParser.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "assemblyVersion": "15.100.0.0",
+            "fileVersion": "2018.150.1000.16"
           }
         }
       },
@@ -525,6 +639,20 @@
       "path": "microsoft.entityframeworkcore.analyzers/2.2.4",
       "hashPath": "microsoft.entityframeworkcore.analyzers.2.2.4.nupkg.sha512"
     },
+    "Microsoft.EntityFrameworkCore.Relational/2.2.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ga+kJhoSBNYv8C2gQl2sB5bTBkWsLFn92CPjZA5ql/MyxJTWri6lf44/GSYEcOQj0tqF5HhMAaB1HxQMiIPBcQ==",
+      "path": "microsoft.entityframeworkcore.relational/2.2.4",
+      "hashPath": "microsoft.entityframeworkcore.relational.2.2.4.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.SqlServer/2.2.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-e0rW3jJXunnwUCout+lQicDoyviO53qsuawZa/HZsfRoEF/bWGlGTJxUN0MPZVQkEd5Gx8ypdDSRbGHtrQp/SA==",
+      "path": "microsoft.entityframeworkcore.sqlserver/2.2.4",
+      "hashPath": "microsoft.entityframeworkcore.sqlserver.2.2.4.nupkg.sha512"
+    },
     "Microsoft.Extensions.Caching.Abstractions/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -601,6 +729,13 @@
       "sha512": "sha512-azyQtqbm4fSaDzZHD/J+V6oWMFaf2tWP4WEGIYePLCMw3+b2RQdj9ybgbQyjCshcitQKQ4lEDOZjmSlTTrHxUg==",
       "path": "microsoft.extensions.primitives/2.2.0",
       "hashPath": "microsoft.extensions.primitives.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.SqlServer.SqlManagementObjects/150.18118.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dpInGWKxxlhU6PSb1LaAAvIV5p0oF6vlA/pmPcKFbFMIT9trNXsjlC+qmsF6bbo5fKBJH3VvuJXfFdg9/Wzi4g==",
+      "path": "microsoft.sqlserver.sqlmanagementobjects/150.18118.0",
+      "hashPath": "microsoft.sqlserver.sqlmanagementobjects.150.18118.0.nupkg.sha512"
     },
     "Microsoft.Win32.Registry/4.5.0": {
       "type": "package",

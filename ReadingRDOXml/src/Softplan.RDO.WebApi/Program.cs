@@ -16,6 +16,8 @@ using Softplan.RDO.WebApi;
 using myConsole;
 using ConsoleApp1;
 using System.ComponentModel;
+using ReadingRDOXml.src.Softplan.RDO.Entities.Entities;
+using Softplan.RDO.Entities.DTO;
 
 namespace ReadingRDOXml
 {
@@ -178,86 +180,92 @@ namespace ReadingRDOXml
     static void Main(string[] args)
     {
 
-      var keyAuth = RequestCanonical();
-
-      Console.WriteLine(keyAuth.Auth);
-      Console.WriteLine(keyAuth.Data);
-
-      var unzip = new Zip();
-      var sqlataBase = new SQLDataBase();
-      var lista = sqlataBase.Select();
-
-      foreach (KeyValuePair<string, byte[]> itemZip in lista)
-      {
-        try
-        {
-          using (var streamZip = new MemoryStream(itemZip.Value))
-          using (var streamXml = unzip.UnZipFile(streamZip))
-          using (Xml xml = new Xml(streamXml))
-          {
-            Console.WriteLine(itemZip.Key);
-            var indicadorUnicoProcedimento = xml.GetElement("indicadorUnicoProcedimento");
-            var codigoForo = xml.GetElement("codigoForo");
-            var numeroDocumentoOrigem = xml.GetElement("numeroDocumentoOrigem");
-            indicadorUnicoProcedimento.Value = LongRandom(99999999999, 9999999999999999, new Random()).ToString();
-            numeroDocumentoOrigem.Value = LongRandom(99999999, 99999999999, new Random()).ToString();
-
-
-            string[] selectableInts = new string[2] { "66", "37", };
-            Random rand = new Random();
-            string randomValue = selectableInts[rand.Next(0, selectableInts.Length)];
-
-            codigoForo.Value = randomValue;
-            var listaDocumentoDigital = xml.GetElement("documentoDigital").Elements();
-
-            int countPdf = 0;
-            foreach (XElement listaDocumento in listaDocumentoDigital)
-            {
-              if (listaDocumento.Name.LocalName.Equals("nomeDocumentoDigital"))
-              {
-                countPdf++;
-                Console.WriteLine(listaDocumento.Value);
-                listaDocumento.Value = "teste.pdf";
-              }
-            }
-
-            using (MemoryStream xmlStream = new MemoryStream())
-            using (var multiPart = new MultiPart())
-            using (var httpClient = new HttpClient())
-            using (var request = new HttpRequestMessage(HttpMethod.Post,
-              @"http://172.21.8.11/delegaciawsRDO/procedimento/assincrono/ajuizamento"))
-            {
-
-              xml.Document.Save(xmlStream);
-              xml.Document.Save(@"envio.xml");
-
-              multiPart.LoadXmlToMultiParte("application/xml", "procedimento", @"envio.xml");
-
-              for (int i = 0; i < countPdf; i++)
-              {
-                multiPart.LoadToMultiParte("multipart/form-data", "documentos", @"teste.pdf");
-              }
-
-              httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type",
-                "application/form-data; charset=utf-8");
-              request.Headers.Add(charset, typeEncode);
-              request.Headers.Add(auth, keyAuth.Auth);
-              request.Headers.Add(xSpDate, keyAuth.Data);
-              request.Headers.Add(xSpHashAlgorithm, spHash);
-              request.Content = multiPart.GetMultipart();
-              var response = httpClient.SendAsync(request).Result;              
-              Thread.Sleep(3000);
-            }
-          }
-          File.Delete("envio.xml");
-        }
-        catch (System.Exception e)
-        {
-          Console.WriteLine(e.Message);
-          continue;
-        }
+      using(var dbTeste = new RDOContext()){
+          dbTeste.Set<EProXml>()
+          .Where(x => x.TipoPeticao == "ajuizamento");
       }
-      Console.WriteLine("Quantidade de itens lidos: " + lista.Count());
+
+      using (var db = new RDOContext())
+      {
+        var registrosXML = (from rdo in db.EProXMLContext where rdo.TipoPeticao == "ajuizamento" select rdo).ToArray();
+        foreach (EProXml registro in registrosXML)
+        {
+          Console.WriteLine(registro.BlXml);
+
+          var unzip = new Zip();
+          var sqlataBase = new SQLDataBase();
+          var lista = sqlataBase.Select();
+
+          try
+          {
+            using (var streamZip = new MemoryStream(registro.BlXml))
+            using (var streamXml = unzip.UnZipFile(streamZip))
+            using (Xml xml = new Xml(streamXml))
+            {
+              Console.WriteLine(registro.NmXml);
+              var indicadorUnicoProcedimento = xml.GetElement("indicadorUnicoProcedimento");
+              var codigoForo = xml.GetElement("codigoForo");
+              var numeroDocumentoOrigem = xml.GetElement("numeroDocumentoOrigem");
+              indicadorUnicoProcedimento.Value = LongRandom(99999999999, 9999999999999999, new Random()).ToString();
+              numeroDocumentoOrigem.Value = LongRandom(99999999, 99999999999, new Random()).ToString();
+
+
+              string[] selectableInts = new string[2] { "66", "37", };
+              Random rand = new Random();
+              string randomValue = selectableInts[rand.Next(0, selectableInts.Length)];
+
+              codigoForo.Value = randomValue;
+              var listaDocumentoDigital = xml.GetElement("documentoDigital").Elements();
+
+              int countPdf = 0;
+              foreach (XElement listaDocumento in listaDocumentoDigital)
+              {
+                if (listaDocumento.Name.LocalName.Equals("nomeDocumentoDigital"))
+                {
+                  countPdf++;
+                  Console.WriteLine(listaDocumento.Value);
+                  listaDocumento.Value = "teste.pdf";
+                }
+              }
+
+              using (MemoryStream xmlStream = new MemoryStream())
+              using (var multiPart = new MultiPart())
+              using (var httpClient = new HttpClient())
+              using (var request = new HttpRequestMessage(HttpMethod.Post, @"http://172.21.8.11/delegaciawsRDO/procedimento/assincrono/ajuizamento"))
+              {
+
+                xml.Document.Save(xmlStream);
+                xml.Document.Save(@"envio.xml");
+
+                multiPart.LoadXmlToMultiParte("application/xml", "procedimento", @"envio.xml");
+
+                for (int i = 0; i < countPdf; i++)
+                {
+                  multiPart.LoadToMultiParte("multipart/form-data", "documentos", @"teste.pdf");
+                }
+
+                var keyAuth = RequestCanonical();
+                
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/form-data; charset=utf-8");
+                request.Headers.Add(charset, typeEncode);
+                request.Headers.Add(auth, keyAuth.Auth);
+                request.Headers.Add(xSpDate, keyAuth.Data);
+                request.Headers.Add(xSpHashAlgorithm, spHash);
+                request.Content = multiPart.GetMultipart();
+                var response = httpClient.SendAsync(request).Result;
+                Thread.Sleep(3000);
+              }
+            }
+            File.Delete("envio.xml");
+          }
+          catch (System.Exception e)
+          {
+            Console.WriteLine(e.Message);
+            continue;
+          }
+        }
+        Console.WriteLine("Quantidade de itens lidos: " + registrosXML.Count());
+      }
     }
   }
 }
