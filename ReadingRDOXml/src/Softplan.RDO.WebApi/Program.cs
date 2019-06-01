@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using System.Xml;
 using System.Linq;
 using System.IO;
 using System.Net;
@@ -68,6 +69,21 @@ namespace ReadingRDOXml
       using (FileStream newFile = File.OpenRead(filePath))
       {
         LoadToMultiParte(parse, contentName, filePath);
+      }
+    }
+
+    public void LoadToMultiParte(string parse, string contentName, string filePath, int loop)
+    {
+      for (int i = 1; i <= loop; i++)
+      {
+        var newFile = i.ToString() + filePath;
+        if (!File.Exists(newFile)){
+          File.Copy(filePath, newFile);
+          LoadToMultiParte(parse, contentName, newFile);
+        }
+        else {          
+          LoadToMultiParte(parse, contentName, newFile);
+        }
       }
     }
 
@@ -176,57 +192,85 @@ namespace ReadingRDOXml
       }
     }
 
+    private static bool IsValiXmlString(string text)
+    {
+      try
+      {
+        XmlConvert.VerifyXmlChars(text);
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+    private static Stream RemoveInvalidXmlChars(Stream xml)
+    {
+      StreamReader reader = new StreamReader(xml);
+      string text = reader.ReadToEnd();
+      if (IsValiXmlString(text))
+      {
+        Console.WriteLine("XML sem erros");
+        byte[] byteArray = Encoding.ASCII.GetBytes(text);
+        return new MemoryStream(byteArray);
+      }
+      else
+      {
+        Console.WriteLine("XML com erros");
+        var validXMLChars = text.Where(ch => XmlConvert.IsXmlChar(ch)).ToArray();
+        var newtext = new string(validXMLChars);
+        byte[] byteArray = Encoding.ASCII.GetBytes(newtext);
+        return new MemoryStream(byteArray);
+      }
+
+    }
 
     static void Main(string[] args)
     {
 
-      using(var dbTeste = new RDOContext()){
-          dbTeste.Set<EProXml>()
-          .Where(x => x.TipoPeticao == "ajuizamento");
-      }
-
       using (var db = new RDOContext())
       {
-        var registrosXML = (from rdo in db.EProXMLContext where rdo.TipoPeticao == "ajuizamento" select rdo).ToArray();
-        foreach (EProXml registro in registrosXML)
+        var registros = db.Set<EProXml>().Where(x => x.TipoPeticao == "ajuizamento");
+
+        foreach (EProXml registro in registros)
         {
-          Console.WriteLine(registro.BlXml);
 
           var unzip = new Zip();
-          var sqlataBase = new SQLDataBase();
-          var lista = sqlataBase.Select();
 
           try
           {
+
+            using (var streamZip = new MemoryStream(registro.BlXml))
+            using (var streamXml = unzip.UnZipFile(streamZip))
+            {
+              XDocument Document = XDocument.Load(RemoveInvalidXmlChars(streamXml));
+              var child = Document.Descendants("documentoDigital").Select(x => x.Value).ToList();
+
+              foreach (string i in child)
+              {
+                Console.WriteLine(i);
+              }
+            }
+
             using (var streamZip = new MemoryStream(registro.BlXml))
             using (var streamXml = unzip.UnZipFile(streamZip))
             using (Xml xml = new Xml(streamXml))
             {
-              Console.WriteLine(registro.NmXml);
-              var indicadorUnicoProcedimento = xml.GetElement("indicadorUnicoProcedimento");
-              var codigoForo = xml.GetElement("codigoForo");
-              var numeroDocumentoOrigem = xml.GetElement("numeroDocumentoOrigem");
-              indicadorUnicoProcedimento.Value = LongRandom(99999999999, 9999999999999999, new Random()).ToString();
-              numeroDocumentoOrigem.Value = LongRandom(99999999, 99999999999, new Random()).ToString();
 
+
+              Console.WriteLine(registro.NmXml);
 
               string[] selectableInts = new string[2] { "66", "37", };
               Random rand = new Random();
               string randomValue = selectableInts[rand.Next(0, selectableInts.Length)];
 
-              codigoForo.Value = randomValue;
-              var listaDocumentoDigital = xml.GetElement("documentoDigital").Elements();
-
-              int countPdf = 0;
-              foreach (XElement listaDocumento in listaDocumentoDigital)
-              {
-                if (listaDocumento.Name.LocalName.Equals("nomeDocumentoDigital"))
-                {
-                  countPdf++;
-                  Console.WriteLine(listaDocumento.Value);
-                  listaDocumento.Value = "teste.pdf";
-                }
-              }
+              xml.SetElementValue("indicadorUnicoProcedimento", LongRandom(99999999999, 9999999999999999, new Random()).ToString());
+              xml.SetElementValue("codigoForo", randomValue);
+              xml.SetElementValue("numeroDocumentoOrigem", LongRandom(99999999, 99999999999, new Random()).ToString());
+              xml.SetElementValue("codigoCompetencia", 9.ToString());
+              xml.SetElementValue("codigoClasse", 279.ToString());
+              xml.SetElementValue("nomeDocumentoDigital", "teste.pdf", true);
+              xml.SetElementValue("codigoTipoDocumentoOrigem", 1.ToString());
 
               using (MemoryStream xmlStream = new MemoryStream())
               using (var multiPart = new MultiPart())
@@ -237,15 +281,17 @@ namespace ReadingRDOXml
                 xml.Document.Save(xmlStream);
                 xml.Document.Save(@"envio.xml");
 
-                multiPart.LoadXmlToMultiParte("application/xml", "procedimento", @"envio.xml");
+                multiPart.LoadXmlToMultiParte("application/xml", "procedimento", @"xml\envio.xml");
 
-                for (int i = 0; i < countPdf; i++)
-                {
-                  multiPart.LoadToMultiParte("multipart/form-data", "documentos", @"teste.pdf");
-                }
+                XmlDocument doc = new XmlDocument();
+                doc.Load(@"xml\envio.xml");
+                XmlNodeList xmlNodeList = doc.GetElementsByTagName("documentoDigital");
+                
+                multiPart.LoadToMultiParte("multipart/form-data", "documentos", @"pdf\teste.pdf", xmlNodeList.Count);
+    
 
                 var keyAuth = RequestCanonical();
-                
+
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/form-data; charset=utf-8");
                 request.Headers.Add(charset, typeEncode);
                 request.Headers.Add(auth, keyAuth.Auth);
@@ -256,7 +302,7 @@ namespace ReadingRDOXml
                 Thread.Sleep(3000);
               }
             }
-            File.Delete("envio.xml");
+            // File.Delete("envio.xml");
           }
           catch (System.Exception e)
           {
@@ -264,7 +310,7 @@ namespace ReadingRDOXml
             continue;
           }
         }
-        Console.WriteLine("Quantidade de itens lidos: " + registrosXML.Count());
+        Console.WriteLine("Quantidade de itens lidos: " + registros.Count());
       }
     }
   }

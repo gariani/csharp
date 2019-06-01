@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Softplan.RDO.Entities.DTO;
+using ReadingRDOXml.src.Softplan.RDO.Entities.DTO;
 
 namespace ReadingRDOXml.src.Softplan.RDO.Entities.Maps
 {
-  public class EProXmlMap : IEntityTypeConfiguration<EProXml>
+  public class EProXmlNovaRemessaMap : IEntityTypeConfiguration<EProXmlNovaRemessa>
   {
-    public void Configure(EntityTypeBuilder<EProXml> builder)
+    public void Configure(EntityTypeBuilder<EProXmlNovaRemessa> builder)
     {
       builder.HasKey(e => new
       {
@@ -18,8 +18,7 @@ namespace ReadingRDOXml.src.Softplan.RDO.Entities.Maps
         NuControleUnico = e.NuControleUnico
       });
 
-      builder.ToTable("EPROXML");
+      builder.ToTable("EPROXMLNOVAREMESSA");
     }
-
   }
 }

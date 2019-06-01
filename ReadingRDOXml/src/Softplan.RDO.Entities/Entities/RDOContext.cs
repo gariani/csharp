@@ -6,9 +6,6 @@ namespace ReadingRDOXml.src.Softplan.RDO.Entities.Entities
 {
   public class RDOContext : DbContext
   {
-
-    // public RDOContext(DbContextOptions<RDOContext> options) : base(options) { }
-
     public DbSet<EProXml> EProXMLContext { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

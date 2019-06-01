@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace Softplan.RDO.WebApi
 {
 
-  public class Xml: IDisposable
+  public class Xml : IDisposable
   {
     private bool disposed = false;
     private IntPtr handle;
@@ -77,18 +77,33 @@ namespace Softplan.RDO.WebApi
       Document = XDocument.Load(path);
     }
 
-    public XElement GetElement(string elementName)
+    public void SetElementValue(string elementName, string value)
     {
+      SetElementValue(elementName, value, false);
+    }
+
+    public void SetElementValue(string elementName, string value, bool increment)
+    {
+      int i = 0;
       foreach (XNode node in Document.DescendantNodes())
       {
         if (node is XElement)
         {
           XElement element = (XElement)node;
           if (element.Name.LocalName.Equals(elementName))
-            return element;
+          {
+            if (increment)
+            {
+              i++;
+              element.Value = i.ToString() + value;
+            }
+            else
+            {
+              element.Value = value;
+            }
+          }
         }
       }
-      return null;
     }
 
     public void Dispose()
