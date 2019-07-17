@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace Entities {
-
+    
     public class Reservation {
         [Key]
         public int Id { get; set; }

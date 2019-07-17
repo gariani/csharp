@@ -1,9 +1,13 @@
 using System;
-using EntityFrameworkCore;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Entities;
+using Hotel.HotelDbContext;
 
 namespace Respository {
 

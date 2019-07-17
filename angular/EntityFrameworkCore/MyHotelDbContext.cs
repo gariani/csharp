@@ -2,7 +2,7 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EntityFrameworkCore {
+namespace Hotel.HotelDbContext {
 
     public class MyHotelDbContext : DbContext {
 
@@ -26,16 +26,16 @@ namespace EntityFrameworkCore {
             );
 
             modelBuilder.Entity<Room> ().HasData (
-                new Room (101, "yellow-room", RoomStatus.Available, false) { Id = 1 }
+                new Room (101, "yellow-room", RoomStatus.Available) { Id = 1 }
             );
             modelBuilder.Entity<Room> ().HasData (
-                new Room (102, "blue-room", RoomStatus.Available, false) { Id = 2 }
+                new Room (102, "blue-room", RoomStatus.Available) { Id = 2 }
             );
             modelBuilder.Entity<Room> ().HasData (
-                new Room (103, "white-room", RoomStatus.Unavailable, false) { Id = 3 }
+                new Room (103, "white-room", RoomStatus.Unavailable) { Id = 3 }
             );
             modelBuilder.Entity<Room> ().HasData (
-                new Room (104, "black-room", RoomStatus.Unavailable, false) { Id = 4 }
+                new Room (104, "black-room", RoomStatus.Unavailable) { Id = 4 }
             );
 
             modelBuilder.Entity<Reservation> ().HasData (

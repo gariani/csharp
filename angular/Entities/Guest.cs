@@ -1,26 +1,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
-public class Guest {
-    [Key]
-    public int Id { get; set; }
+namespace Entities {
 
-    [Required]
-    [StringLength (300)]
-    public string Name { get; set; }
+    public class Guest {
+        [Key]
+        public int Id { get; set; }
 
-    public DateTime RegisterDate { get; set; }
+        [Required]
+        [StringLength (300)]
+        public string Name { get; set; }
 
-    public Guest () {
+        public DateTime RegisterDate { get; set; }
 
+        public Guest () {
+
+        }
+
+        public Guest (string name, DateTime registerDate) {
+            Name = name;
+            RegisterDate = registerDate;
+        }
     }
-
-    public Guest (string name, DateTime registerDate) {
-        Name = name;
-        RegisterDate = registerDate;
-    }
-
-    
 }
